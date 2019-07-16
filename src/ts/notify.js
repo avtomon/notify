@@ -155,7 +155,7 @@ export var Notify;
                     iconContainer.classList.remove('alarm', 'attention');
                 }
             };
-            if (!data['title-hide-on'] || data['title-hide-on'] !== location.pathname) {
+            if (!data['title_hide_on'] || data['title_hide_on'] !== location.pathname) {
                 let titleElement;
                 if (data['href']) {
                     titleElement = toast.querySelector('.title > a');
