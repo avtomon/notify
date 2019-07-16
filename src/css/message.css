@@ -1,0 +1,32 @@
+.notify > .icon-container {
+    margin-right: 0.7rem;
+}
+
+.notify > .icon-container.ok {
+    color: limegreen;
+}
+
+.notify > .icon-container.attention {
+    color: yellow;
+}
+
+.notify > .icon-container.alarm {
+    color: red;
+}
+
+.notify > .icon-container.ok i:after {
+    content: 'thumb_up';
+}
+
+.notify > .icon-container.attention i:after {
+    content: 'report_problem';
+}
+
+.notify > .icon-container.alarm i:after {
+    content: 'report';
+}
+
+.notify > .text {
+    position: relative;
+    bottom: 2px;
+}
