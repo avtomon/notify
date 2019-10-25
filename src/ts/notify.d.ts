@@ -22,6 +22,10 @@ export declare namespace Notify {
          * @returns {Object}
          */
         protected getChannel(channelName: string): Object;
+        /**
+         * @param {string} channelName
+         * @param eventName
+         */
         subscribe(channelName: string, eventName: any): void;
         /**
          * @param {string} channelName

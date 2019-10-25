@@ -1,6 +1,6 @@
 'use strict';
 import { Utils } from "../../../good-funcs.js/src/ts/GoodFuncs.js";
-const PUSHER_TOKEN = 'fce413303b17a4879b88', AUTH_ENDPOINT = '/user/pusher-auth-test', ENCRYPTION_KEY = 'JFd0654', MESSAGE_DEFAULT_DISPLAY_LENGTH = 10000, TIMER_DEFAULT_DISPLAY_LENGTH = 1800000;
+const PUSHER_TOKEN = 'fce413303b17a4879b88', AUTH_ENDPOINT = '/notify/auth', ENCRYPTION_KEY = 'JFd0654', MESSAGE_DEFAULT_DISPLAY_LENGTH = 3000, TIMER_DEFAULT_DISPLAY_LENGTH = 1800000;
 let defaultToastSettings = {
     html: '',
     displayLength: MESSAGE_DEFAULT_DISPLAY_LENGTH,
@@ -8,7 +8,6 @@ let defaultToastSettings = {
 };
 export var Notify;
 (function (Notify_1) {
-    var GoodFuncs = Utils.GoodFuncs;
     class Notify {
         /**
          * @param {(status: Number) => void} _errorCallback
@@ -21,7 +20,7 @@ export var Notify;
              * @private
              */
             this._channels = [];
-            this._ready = Promise.all(GoodFuncs.getScripts(['https://js.pusher.com/4.4/pusher.min.js'])).then(function () {
+            this._ready = Promise.all(Utils.GoodFuncs.getScripts(['https://js.pusher.com/4.4/pusher.min.js'])).then(function () {
                 this._pusher = new Pusher(PUSHER_TOKEN, {
                     cluster: 'eu',
                     forceTLS: true,
@@ -46,6 +45,10 @@ export var Notify;
             }
             return this._channels[channelName];
         }
+        /**
+         * @param {string} channelName
+         * @param eventName
+         */
         subscribe(channelName, eventName) {
             let channel = this.getChannel(channelName);
             channel.bind(eventName, function (data) {
@@ -91,10 +94,11 @@ export var Notify;
             if (!data['message']) {
                 throw Error("Received data don't contains message property");
             }
-            let html = (new DOMParser).parseFromString(this._markup, 'text/html'), textElement = html && html.querySelector('.text'), iconContainer = html && html.querySelector('.icon-container'), toastSettings = defaultToastSettings;
+            let html = (new DOMParser).parseFromString(this._markup, 'text/html'), textElement = html && html.querySelector('.text'), iconContainer = html && html.querySelector('.icon-container'), toastSettings = {};
+            Object.assign(toastSettings, defaultToastSettings);
             textElement.innerHTML = data['message'];
             iconContainer.classList.add(data['status']);
-            toastSettings.html = html.body.innerHTML;
+            toastSettings['html'] = html.body.innerHTML;
             M.toast(toastSettings);
         }
     }
@@ -121,10 +125,11 @@ export var Notify;
             if (!data['start_time'] || !data['message']) {
                 throw Error("Received data don't contains start_time property");
             }
-            let html = (new DOMParser).parseFromString(this._markup, 'text/html'), uniq = 'timer-' + Utils.GoodFuncs.getRandomString(12), toastSettings = defaultToastSettings;
-            toastSettings.classes = `${toastSettings.classes} ${uniq}`;
-            toastSettings.html = html.body.innerHTML;
-            toastSettings.displayLength = TIMER_DEFAULT_DISPLAY_LENGTH;
+            let html = (new DOMParser).parseFromString(this._markup, 'text/html'), uniq = 'timer-' + Utils.GoodFuncs.getRandomString(12), toastSettings = {};
+            Object.assign(toastSettings, defaultToastSettings);
+            toastSettings['classes'] = `${toastSettings['classes']} ${uniq}`;
+            toastSettings['html'] = html.body.innerHTML;
+            toastSettings['displayLength'] = TIMER_DEFAULT_DISPLAY_LENGTH;
             let toastInstance = M.toast(toastSettings), toast = document.querySelector('.' + uniq), timerElement = toast.querySelector('.timer'), iconContainer = toast.querySelector('.icon-container'), seconds = data['start_time'], tick = function () {
                 let time = new Date(0, 0, 0, 0, 0, seconds--);
                 timerElement.innerText = time.toLocaleTimeString();

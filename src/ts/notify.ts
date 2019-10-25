@@ -4,9 +4,9 @@ import {Utils} from "../../../good-funcs.js/src/ts/GoodFuncs.js";
 
 const
     PUSHER_TOKEN = 'fce413303b17a4879b88',
-    AUTH_ENDPOINT = '/user/pusher-auth-test',
+    AUTH_ENDPOINT = '/notify/auth',
     ENCRYPTION_KEY = 'JFd0654',
-    MESSAGE_DEFAULT_DISPLAY_LENGTH = 10000,
+    MESSAGE_DEFAULT_DISPLAY_LENGTH = 3000,
     TIMER_DEFAULT_DISPLAY_LENGTH = 1800000;
 
 let defaultToastSettings = {
@@ -16,8 +16,6 @@ let defaultToastSettings = {
 };
 
 export namespace Notify {
-
-    import GoodFuncs = Utils.GoodFuncs;
 
     abstract class Notify {
 
@@ -40,7 +38,7 @@ export namespace Notify {
          */
         protected constructor(protected _errorCallback : ((status : Number) => void) | null = null) {
 
-            this._ready = Promise.all(GoodFuncs.getScripts(['https://js.pusher.com/4.4/pusher.min.js'])).then(function () {
+            this._ready = Promise.all(Utils.GoodFuncs.getScripts(['https://js.pusher.com/4.4/pusher.min.js'])).then(function () {
 
                 this._pusher = new Pusher(PUSHER_TOKEN, {
                     cluster: 'eu',
@@ -72,6 +70,10 @@ export namespace Notify {
             return this._channels[channelName];
         }
 
+        /**
+         * @param {string} channelName
+         * @param eventName
+         */
         public subscribe(channelName : string, eventName) : void {
 
             let channel = this.getChannel(channelName);
@@ -138,11 +140,12 @@ export namespace Notify {
             let html = (new DOMParser).parseFromString(this._markup, 'text/html'),
                 textElement : HTMLElement = html && (html.querySelector('.text') as HTMLElement),
                 iconContainer = html && (html.querySelector('.icon-container') as HTMLElement),
-                toastSettings = defaultToastSettings;
+                toastSettings = {};
 
+            Object.assign(toastSettings, defaultToastSettings);
             textElement.innerHTML = data['message'];
             iconContainer.classList.add(data['status']);
-            toastSettings.html = html.body.innerHTML;
+            toastSettings['html'] = html.body.innerHTML;
 
             M.toast(toastSettings);
         }
@@ -178,11 +181,12 @@ export namespace Notify {
 
             let html = (new DOMParser).parseFromString(this._markup, 'text/html'),
                 uniq = 'timer-' + Utils.GoodFuncs.getRandomString(12),
-                toastSettings = defaultToastSettings;
+                toastSettings = {};
 
-            toastSettings.classes = `${toastSettings.classes} ${uniq}`;
-            toastSettings.html = html.body.innerHTML;
-            toastSettings.displayLength = TIMER_DEFAULT_DISPLAY_LENGTH;
+            Object.assign(toastSettings, defaultToastSettings);
+            toastSettings['classes'] = `${toastSettings['classes']} ${uniq}`;
+            toastSettings['html'] = html.body.innerHTML;
+            toastSettings['displayLength'] = TIMER_DEFAULT_DISPLAY_LENGTH;
 
             let toastInstance = M.toast(toastSettings),
                 toast : HTMLElement = (document.querySelector('.' + uniq) as HTMLElement),
