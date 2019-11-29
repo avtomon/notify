@@ -51,6 +51,7 @@ export var Notify;
          */
         subscribe(channelName, eventName) {
             let channel = this.getChannel(channelName);
+            channel.
             channel.bind(eventName, function (data) {
                 this.handler(data);
             }.bind(this));
