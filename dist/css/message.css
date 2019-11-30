@@ -29,4 +29,5 @@
 .notify > .text {
     position: relative;
     bottom: 2px;
+    font-size: 1rem !important;
 }

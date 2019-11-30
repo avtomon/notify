@@ -23,4 +23,5 @@
 
 .notify > .text a {
     color: white !important;
+    font-size: 1rem !important;
 }
