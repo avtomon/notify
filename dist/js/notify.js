@@ -10,9 +10,11 @@ export var Notify;
 (function (Notify_1) {
     class Notify {
         /**
-         * @param {(status: Number) => void} _errorCallback
+         * @param userId
+         * @param {((status: Number) => void) | null} _errorCallback
+         * @param {boolean} isDebug
          */
-        constructor(_errorCallback = null) {
+        constructor(userId, _errorCallback = null, isDebug = false) {
             this._errorCallback = _errorCallback;
             /**
              * @type {string[]}
@@ -21,11 +23,15 @@ export var Notify;
              */
             this._channels = [];
             this._ready = Promise.all(Utils.GoodFuncs.getScripts(['https://js.pusher.com/4.4/pusher.min.js'])).then(function () {
+                Pusher.logToConsole = isDebug;
                 this._pusher = new Pusher(PUSHER_TOKEN, {
                     cluster: 'eu',
                     forceTLS: true,
                     authEndpoint: AUTH_ENDPOINT,
-                    encryptionMasterKey: ENCRYPTION_KEY
+                    encryptionMasterKey: ENCRYPTION_KEY,
+                    auth: {
+                        params: { user_id: userId },
+                    }
                 });
             }.bind(this));
         }
@@ -51,7 +57,6 @@ export var Notify;
          */
         subscribe(channelName, eventName) {
             let channel = this.getChannel(channelName);
-            channel.
             channel.bind(eventName, function (data) {
                 this.handler(data);
             }.bind(this));
@@ -75,10 +80,12 @@ export var Notify;
     }
     class Message extends Notify {
         /**
+         * @param userId
          * @param {((status: Number) => void) | null} _errorCallback
+         * @param {boolean} isDebug
          */
-        constructor(_errorCallback = null) {
-            super(_errorCallback);
+        constructor(userId, _errorCallback = null, isDebug = false) {
+            super(userId, _errorCallback, isDebug);
             this._errorCallback = _errorCallback;
             let self = this;
             this._ready = this._ready.then(function () {
@@ -106,10 +113,12 @@ export var Notify;
     Notify_1.Message = Message;
     class Timer extends Notify {
         /**
+         * @param userId
          * @param {((status: Number) => void) | null} _errorCallback
+         * @param {boolean} isDebug
          */
-        constructor(_errorCallback = null) {
-            super(_errorCallback);
+        constructor(userId, _errorCallback = null, isDebug = false) {
+            super(userId, _errorCallback, isDebug);
             this._errorCallback = _errorCallback;
             let self = this;
             this._ready = this._ready.then(function () {

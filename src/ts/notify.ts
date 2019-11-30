@@ -34,19 +34,28 @@ export namespace Notify {
         protected _channels : string[] = [];
 
         /**
-         * @param {(status: Number) => void} _errorCallback
+         * @param userId
+         * @param {((status: Number) => void) | null} _errorCallback
+         * @param {boolean} isDebug
          */
-        protected constructor(protected _errorCallback : ((status : Number) => void) | null = null) {
+        protected constructor(
+            userId,
+            protected _errorCallback : ((status : Number) => void) | null = null,
+            isDebug : boolean = false
+        ) {
 
             this._ready = Promise.all(Utils.GoodFuncs.getScripts(['https://js.pusher.com/4.4/pusher.min.js'])).then(function () {
 
+                Pusher.logToConsole = isDebug;
                 this._pusher = new Pusher(PUSHER_TOKEN, {
                     cluster: 'eu',
                     forceTLS: true,
                     authEndpoint: AUTH_ENDPOINT,
-                    encryptionMasterKey: ENCRYPTION_KEY
+                    encryptionMasterKey: ENCRYPTION_KEY,
+                    auth: {
+                        params: {user_id: userId},
+                    }
                 });
-
 
             }.bind(this));
         }
@@ -56,7 +65,7 @@ export namespace Notify {
          *
          * @returns {Object}
          */
-        protected getChannel(channelName : string) : Object {
+        protected getChannel(channelName : string) {
 
             if (!this._channels[channelName]) {
                 this._channels[channelName] = this._pusher.subscribe(channelName);
@@ -114,11 +123,16 @@ export namespace Notify {
         protected _markup;
 
         /**
+         * @param userId
          * @param {((status: Number) => void) | null} _errorCallback
+         * @param {boolean} isDebug
          */
-        public constructor(protected _errorCallback : ((status : Number) => void) | null = null) {
-
-            super(_errorCallback);
+        public constructor(
+            userId,
+            protected _errorCallback : ((status : Number) => void) | null = null,
+            isDebug : boolean = false
+        ) {
+            super(userId, _errorCallback, isDebug);
             let self = this;
             this._ready = this._ready.then(function () {
                 fetch('/vendor/avtomon/notify.js/dist/html/message.html').then(async function (response) {
@@ -156,11 +170,16 @@ export namespace Notify {
         protected _markup;
 
         /**
+         * @param userId
          * @param {((status: Number) => void) | null} _errorCallback
+         * @param {boolean} isDebug
          */
-        public constructor(protected _errorCallback : ((status : Number) => void) | null = null) {
-
-            super(_errorCallback);
+        public constructor(
+            userId,
+            protected _errorCallback : ((status : Number) => void) | null = null,
+            isDebug : boolean = false
+        ) {
+            super(userId, _errorCallback, isDebug);
             let self = this;
             this._ready = this._ready.then(function () {
                 fetch('/vendor/avtomon/notify.js/dist/html/timer.html').then(async function (response) {

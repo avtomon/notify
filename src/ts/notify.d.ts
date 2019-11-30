@@ -13,15 +13,17 @@ export declare namespace Notify {
          */
         protected _channels: string[];
         /**
-         * @param {(status: Number) => void} _errorCallback
+         * @param userId
+         * @param {((status: Number) => void) | null} _errorCallback
+         * @param {boolean} isDebug
          */
-        protected constructor(_errorCallback?: ((status: Number) => void) | null);
+        protected constructor(userId: any, _errorCallback?: ((status: Number) => void) | null, isDebug?: boolean);
         /**
          * @param {string} channelName
          *
          * @returns {Object}
          */
-        protected getChannel(channelName: string): Object;
+        protected getChannel(channelName: string): any;
         /**
          * @param {string} channelName
          * @param eventName
@@ -45,9 +47,11 @@ export declare namespace Notify {
         protected _errorCallback: ((status: Number) => void) | null;
         protected _markup: any;
         /**
+         * @param userId
          * @param {((status: Number) => void) | null} _errorCallback
+         * @param {boolean} isDebug
          */
-        constructor(_errorCallback?: ((status: Number) => void) | null);
+        constructor(userId: any, _errorCallback?: ((status: Number) => void) | null, isDebug?: boolean);
         /**
          * @param {Object} data
          */
@@ -57,9 +61,11 @@ export declare namespace Notify {
         protected _errorCallback: ((status: Number) => void) | null;
         protected _markup: any;
         /**
+         * @param userId
          * @param {((status: Number) => void) | null} _errorCallback
+         * @param {boolean} isDebug
          */
-        constructor(_errorCallback?: ((status: Number) => void) | null);
+        constructor(userId: any, _errorCallback?: ((status: Number) => void) | null, isDebug?: boolean);
         /**
          * @param {Object} data
          */
