@@ -67,6 +67,11 @@ export declare namespace Notify {
          */
         constructor(userId: any, _errorCallback?: ((status: Number) => void) | null, isDebug?: boolean);
         /**
+         * @param {string} message
+         * @returns {boolean}
+         */
+        static timerIsPresent(message: string): boolean;
+        /**
          * @param {Object} data
          */
         handler(data: Object): void;

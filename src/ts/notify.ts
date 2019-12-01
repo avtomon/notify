@@ -190,12 +190,27 @@ export namespace Notify {
         }
 
         /**
+         * @param {string} message
+         * @returns {boolean}
+         */
+        public static timerIsPresent(message : string) : boolean
+        {
+            return Array.from(document.getElementsByClassName('toast')).some(function (element) {
+                return M.Toast.getInstance(element).el.querySelector('a').text === message;
+            });
+        }
+
+        /**
          * @param {Object} data
          */
         public handler(data : Object) : void {
 
             if (!data['start_time'] || !data['message']) {
                 throw Error("Received data don't contains start_time property");
+            }
+
+            if (Timer.timerIsPresent(data['message'])) {
+                return;
             }
 
             let html = (new DOMParser).parseFromString(this._markup, 'text/html'),

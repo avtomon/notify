@@ -129,11 +129,23 @@ export var Notify;
             }).then();
         }
         /**
+         * @param {string} message
+         * @returns {boolean}
+         */
+        static timerIsPresent(message) {
+            return Array.from(document.getElementsByClassName('toast')).some(function (element) {
+                return M.Toast.getInstance(element).el.querySelector('a').text === message;
+            });
+        }
+        /**
          * @param {Object} data
          */
         handler(data) {
             if (!data['start_time'] || !data['message']) {
                 throw Error("Received data don't contains start_time property");
+            }
+            if (Timer.timerIsPresent(data['message'])) {
+                return;
             }
             let html = (new DOMParser).parseFromString(this._markup, 'text/html'), uniq = 'timer-' + Utils.GoodFuncs.getRandomString(12), toastSettings = {};
             Object.assign(toastSettings, defaultToastSettings);
