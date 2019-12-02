@@ -213,6 +213,10 @@ export namespace Notify {
                 return;
             }
 
+            if (data['title_hide_on'] !== location.pathname) {
+                return;
+            }
+
             let html = (new DOMParser).parseFromString(this._markup, 'text/html'),
                 uniq = 'timer-' + Utils.GoodFuncs.getRandomString(12),
                 toastSettings = {};
@@ -258,22 +262,6 @@ export namespace Notify {
                         iconContainer.classList.remove('alarm', 'attention');
                     }
                 };
-
-            if (!data['title_hide_on'] || data['title_hide_on'] !== location.pathname) {
-                let titleElement;
-                if (data['href']) {
-                    titleElement = (toast.querySelector('.title > a') as HTMLAnchorElement);
-                    titleElement.href = data['href'];
-                } else {
-                    titleElement = (toast.querySelector('.title') as HTMLAnchorElement);
-                }
-
-                if (data['message'].length > 50) {
-                    data['message'] = data['message'].substr(0, 50) + '...';
-                }
-
-                titleElement.innerHTML = data['message'];
-            }
 
             tick();
             setInterval(tick, 1000)
