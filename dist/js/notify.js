@@ -107,7 +107,16 @@ export var Notify;
             textElement.innerHTML = data['message'];
             iconContainer.classList.add(data['status']);
             toastSettings['html'] = html.body.innerHTML;
-            M.toast(toastSettings);
+            let toast;
+            document.addEventListener('visibilitychange', function () {
+                if (!document.hidden && !toast) {
+                    toast = M.toast(toastSettings);
+                }
+            });
+            if (document.hidden) {
+                return;
+            }
+            toast = M.toast(toastSettings);
         }
     }
     Notify_1.Message = Message;
