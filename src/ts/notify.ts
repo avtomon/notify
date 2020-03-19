@@ -204,10 +204,9 @@ export namespace Notify {
          * @param {string} message
          * @returns {boolean}
          */
-        public static timerIsPresent(message : string) : boolean
-        {
+        public static timerIsPresent(message : string) : boolean {
             return Array.from(document.getElementsByClassName('toast')).some(function (element) {
-                return M.Toast.getInstance(element).el.querySelector('a').text === message;
+                return M.Toast.getInstance(element).el.querySelector('a').innerHTML === message;
             });
         }
 
@@ -224,14 +223,17 @@ export namespace Notify {
                 return;
             }
 
-            if (data['title_hide_on'] !== location.pathname) {
+            if (location.pathname.includes(data['title_hide_on'])) {
                 return;
             }
 
             let html = (new DOMParser).parseFromString(this._markup, 'text/html'),
                 uniq = 'timer-' + Utils.GoodFuncs.getRandomString(12),
-                toastSettings = {};
+                toastSettings = {},
+                textElement : HTMLAnchorElement = html && (html.querySelector('a') as HTMLAnchorElement);
 
+            textElement.innerHTML = data['message'];
+            textElement.href = data['href'];
             Object.assign(toastSettings, defaultToastSettings);
             toastSettings['classes'] = `${toastSettings['classes']} ${uniq}`;
             toastSettings['html'] = html.body.innerHTML;

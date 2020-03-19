@@ -143,7 +143,7 @@ export var Notify;
          */
         static timerIsPresent(message) {
             return Array.from(document.getElementsByClassName('toast')).some(function (element) {
-                return M.Toast.getInstance(element).el.querySelector('a').text === message;
+                return M.Toast.getInstance(element).el.querySelector('a').innerHTML === message;
             });
         }
         /**
@@ -156,10 +156,12 @@ export var Notify;
             if (Timer.timerIsPresent(data['message'])) {
                 return;
             }
-            if (data['title_hide_on'] !== location.pathname) {
+            if (location.pathname.includes(data['title_hide_on'])) {
                 return;
             }
-            let html = (new DOMParser).parseFromString(this._markup, 'text/html'), uniq = 'timer-' + Utils.GoodFuncs.getRandomString(12), toastSettings = {};
+            let html = (new DOMParser).parseFromString(this._markup, 'text/html'), uniq = 'timer-' + Utils.GoodFuncs.getRandomString(12), toastSettings = {}, textElement = html && html.querySelector('a');
+            textElement.innerHTML = data['message'];
+            textElement.href = data['href'];
             Object.assign(toastSettings, defaultToastSettings);
             toastSettings['classes'] = `${toastSettings['classes']} ${uniq}`;
             toastSettings['html'] = html.body.innerHTML;

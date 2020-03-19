@@ -25,3 +25,15 @@
     color: white !important;
     font-size: 1rem !important;
 }
+
+@media screen and (max-device-height: 600px), screen and (max-device-width: 600px) {
+    .timer {
+        flex: 1;
+        margin-left: 1rem;
+    }
+
+    .notify > .text {
+        display: flex;
+        width: 100%;
+    }
+}
