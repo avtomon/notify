@@ -1,6 +1,6 @@
 'use strict';
 import { Utils } from "../../../good-funcs.js/src/ts/GoodFuncs.js";
-const PUSHER_TOKEN = 'fce413303b17a4879b88', AUTH_ENDPOINT = '/notify/auth', ENCRYPTION_KEY = 'JFd0654', MESSAGE_DEFAULT_DISPLAY_LENGTH = 3000, TIMER_DEFAULT_DISPLAY_LENGTH = 1800000;
+const PUSHER_TOKEN = '9d33799af192bdbfe794', AUTH_ENDPOINT = '/notify/auth', ENCRYPTION_KEY = 'JFd0654', MESSAGE_DEFAULT_DISPLAY_LENGTH = 3000, TIMER_DEFAULT_DISPLAY_LENGTH = 1800000;
 let defaultToastSettings = {
     html: '',
     displayLength: MESSAGE_DEFAULT_DISPLAY_LENGTH,
