@@ -1,6 +1,6 @@
 'use strict';
 import { Utils } from "../../../good-funcs.js/src/ts/GoodFuncs.js";
-import { BrowserDotenv } from "../../../browser-dotenv/dist/browser-dotenv.js";
+import { BrowserDotenv } from "../../../browser-dotenv.js/dist/browser-dotenv.js";
 const AUTH_ENDPOINT = '/notify/auth', ENCRYPTION_KEY = 'JFd0654', MESSAGE_DEFAULT_DISPLAY_LENGTH = 3000, TIMER_DEFAULT_DISPLAY_LENGTH = 1800000;
 let defaultToastSettings = {
     html: '',

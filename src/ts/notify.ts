@@ -1,7 +1,7 @@
 'use strict';
 
 import {Utils} from "../../../good-funcs.js/src/ts/GoodFuncs.js";
-import {BrowserDotenv} from "../../../browser-dotenv/dist/browser-dotenv.js";
+import {BrowserDotenv} from "../../../browser-dotenv.js/dist/browser-dotenv.js";
 
 const
     AUTH_ENDPOINT = '/notify/auth',
