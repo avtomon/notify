@@ -1,6 +1,7 @@
 'use strict';
 import { Utils } from "../../../good-funcs.js/src/ts/GoodFuncs.js";
-const PUSHER_TOKEN = 'fce413303b17a4879b88', AUTH_ENDPOINT = '/notify/auth', ENCRYPTION_KEY = 'JFd0654', MESSAGE_DEFAULT_DISPLAY_LENGTH = 3000, TIMER_DEFAULT_DISPLAY_LENGTH = 1800000;
+import { BrowserDotenv } from "../../../browser-dotenv.js/dist/browser-dotenv.js";
+const AUTH_ENDPOINT = '/notify/auth', ENCRYPTION_KEY = 'JFd0654', MESSAGE_DEFAULT_DISPLAY_LENGTH = 3000, TIMER_DEFAULT_DISPLAY_LENGTH = 1800000;
 let defaultToastSettings = {
     html: '',
     displayLength: MESSAGE_DEFAULT_DISPLAY_LENGTH,
@@ -24,7 +25,7 @@ export var Notify;
             this._channels = [];
             this._ready = Promise.all(Utils.GoodFuncs.getScripts(['https://js.pusher.com/4.4/pusher.min.js'])).then(function () {
                 Pusher.logToConsole = isDebug;
-                this._pusher = new Pusher(PUSHER_TOKEN, {
+                this._pusher = new Pusher(window[BrowserDotenv.ENV_WINDOW_PROPERTY]['PUSHER_TOKEN'], {
                     cluster: 'eu',
                     forceTLS: true,
                     authEndpoint: AUTH_ENDPOINT,
