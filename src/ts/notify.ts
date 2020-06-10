@@ -71,7 +71,7 @@ export namespace Notify {
                 this._channels[channelName] = this._pusher.subscribe(channelName);
                 this._channels[channelName].bind('pusher:subscription_error', function (status) {
                     if (status >= 400) {
-                        this._errorCallback(status);
+                        this._errorCallback && this._errorCallback(status);
                     }
                 }.bind(this));
             }
