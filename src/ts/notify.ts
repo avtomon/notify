@@ -148,7 +148,7 @@ export namespace Notify {
         public handler(data : Object) : void {
 
             if (!data['message']) {
-                throw Error("Received data don't contains message property");
+                throw Error('Полученные данные не содержат текстового сообщения.');
             }
 
             let html = (new DOMParser).parseFromString(this._markup, 'text/html'),
@@ -216,7 +216,7 @@ export namespace Notify {
         public handler(data : Object) : void {
 
             if (!data['start_time'] || !data['message']) {
-                throw Error("Received data don't contains start_time property");
+                throw Error('Полученные данные не содержат время старта таймера.');
             }
 
             if (Timer.timerIsPresent(data['message'])) {
