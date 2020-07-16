@@ -101,7 +101,7 @@ export var Notify;
          */
         handler(data) {
             if (!data['message']) {
-                throw Error("Received data don't contains message property");
+                throw Error('Полученные данные не содержат текстового сообщения.');
             }
             let html = (new DOMParser).parseFromString(this._markup, 'text/html'), textElement = html && html.querySelector('.text'), iconContainer = html && html.querySelector('.icon-container'), toastSettings = {};
             Object.assign(toastSettings, defaultToastSettings);
@@ -152,7 +152,7 @@ export var Notify;
          */
         handler(data) {
             if (!data['start_time'] || !data['message']) {
-                throw Error("Received data don't contains start_time property");
+                throw Error('Полученные данные не содержат время старта таймера.');
             }
             if (Timer.timerIsPresent(data['message'])) {
                 return;
